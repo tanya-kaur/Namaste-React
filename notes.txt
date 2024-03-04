@@ -1,0 +1,86 @@
+Episode-02 Igniting our App
+-> To start creating our production ready app, first we saw that how our app use npm.
+-> For that, let's give a command `npm init` in our terminal. After configuring it, we see that one new file will be getting added into our project which is called "package.json"
+-> package.json is basically the configuration for our npm. It keeps a track that what version of package is installed in our system.
+-> webpack, parcel, vite are the bundlers which are used to bundle all the files before sending it to production. for the fact, `Create-react-app` uses webpack bundler.
+-> Usimg npm, there are 2 types of dependencies which we can install - dev dependencies and normal dependencies
+-> dev dependencies are required during the development phase while developing the app.
+-> normal dependencies are used mostly in production.
+-> We are using parcel bundler for our app. The command to install parcel is:
+`npm install -D parcel` where 'D' stands for dev dependency.
+-> Note: caret(^) will help in upgrade the smaller changes in the version for example from 2.8.3 it can do 2.8.4, but tilde(~) will upgrade to bigger versions for example it can do 2.8 to 3.5 [in package.json, symbols used before versions]
+-> After installing parcel, we got a new file added 1`package.lock.json.
+-> package.lock.json keeps the record of the initial version been installed of a particular package. It also has the hash code which can be checked when our code is in local and also went for production. If the code in production is not working but in local it's working, then the hash code can be checked.
+Transitive dependencies: When we install a dependency, it has further dependencies and separate package.json file. These are called transitive dependencies.
+-> There is no need to push node modules anywhere like github or in production even, rather we can push package.json and package.lock.json because we can recreate node modules using `npm install`.
+-> npx command is used to execute a package. For example, `npx parcel index.html` will build the index.html. This command will build the develop build of our app and host the build on locahost:port.
+-> dist folder is for the production build. Command for production build is `npx parcel build index.html`.
+-> .parcel-cache is the cache folder which is used by parcel to store the cache of the files.
+-> we can add older versions of any browser using browserslist in package.json. For example, "browserslist": ["last 1 version", "> 1%"] will add the last version of the browser and the browser which has more than 1% of the market share.
+
+Episode-03 Laying the Foundation
+-> We can use scripts in package.json to write the commands. For example, "start": "npx parcel index.html" and "build": "npx parcel build index.html". Now, to do a dev build, we can run `npm run start` and for production -> React.createElement is an object but when we render this element on to DOM, it becomes html element. 
+-> In React.createElement("h1", {id: "heading"}, "Hello World"), "h1" is the tag, {id: "heading"} is an object having attributes and "Hello World" is the children(props).
+-> root.render(React.createElement("h1", {id: "heading"}, "Hello World")) will convert the object into html element and render it on the DOM.
+-> JSX is the javascript syntax which is make easier to create react elements. JSX is not HTML inside javascript.
+-> Using core react, we create a react element using React.createElement. But in JSX, we create HTML syntax directly. For example, `const head = <h1 id="heading">Hello World</h1>`.
+-> const head = <h1 id="heading">Hello World</h1> This piece of code is not javascript, it will throw an error. So, behind the scenes, parcel is doing its job to transpile the JSX for JS engine to understand. And this transpilation is carried out by Babel. Babel is a javascript transpiler/compiler which converts the JSX into the react code which is understandable by the JS engine/browser.
+-> In  reality, JSX => React.createElement => JS object  => HTML
+-> Conversion of JSX to react.createElement is done by Babel. 
+-> If we have to give attributes to JSX, we use camelCase. 
+-> If we are using mulitple lines in JSX, then we have to wrap it in round brackets which tells that where our JSX is ending.
+-> There are 2 ways to create components: Class based components(old) and functional components(new).
+A react functional component is a function that returns a piece of JSX code. It is just like normal javascript function.
+-> code1:
+const HeadingComponent = () => {
+    return <h1 id="heading">Hello World</h1>
+} // most of the time, we use this syntax
+-> code2:
+const HeadingComponent = () => (<h1 id="heading">Hello World</h1>);
+-> code 1 and code 2 are same.
+-> JSX is used to sanitize the code. For example, if any api sends the malicious data in our code, then JSX will sanitize it and will not allow to execute the malicious code.
+-> We can render the react element inside react component, and vice versa. Also, we can render react element another react element. 
+
+Episode-04 Talk is cheap show me the code
+-> React composition forms when there is a component inside another component.
+-> `{ }` in these braces, we can write javascript code inside the react component.
+-> we can render functional component by following syntaxes: {Title()}, <Title />, <Title></Title>
+-> Passing to a prop to a component is just like passing an argument to a function. Props are the objects.
+-> <RestaurantCard resName="KFC" cuisine="Fast Food, Burger"/> Here, resName and cuisine are the props which are passed to the RestaurantCard component.
+-> When you want to dynamically pass some data into the component, you can pass as a prop.
+-> We can destruct the props in the functional component. For example, `const RestaurantCard = ({resName, cuisine}) => {return <div><h1>{resName}</h1><p>{cuisine}</p></div>}`.
+-> Config driven UI: The UI which works on configs. For example, if we want to show some data in our app at particular location but not all locations. Then, we can use config driven UI.
+-> Whenever we loop something in JSX, we have to give the key prop. It is very essential. It helps in optimization. For example, If any RestaurantCard is added, then it will only render that particular card, instead of re rendering all the cards because all the cards already have their unique IDs which tells react that those cards are already present.
+-> although we can use index in a map function as a key, but react recommends that we should not use indexes as the keys.
+-> Optional Chaining: 
+
+Episode-05 Let's get hooked
+-> There are two types of export/import => default and named.
+-> Default export/import:
+=> export default <ComponentName>
+=> import <ComponentName> from "path"
+-> Named export/import:
+=> export const component;
+=> import {component} from "path";
+-> React Hooks - Normal JS functions also known as utility functions.
+=> useState():  It is used to create state variables. It maintains the state of the component. It is a named export from react.
+-> Whenever the state variable updates, react re-renders the component.
+-> How react works behind the scenes?
+=> lets understand few key terms:
+=> actual DOM: The dom which we actually create and can be shown in browser under elements tab.
+=> virtual DOM: The dom which is created by react. It is the copy of actual DOM. It is basically an object which is a react element.(studied in starting).
+=> Diff Algorithm:  It finds the difference between the updated virtual DOM and previous virtual DOM. It does the efficient DOM manipulation.
+=> Reconciliation Algorithm: When something changes on the UI, it is called Reconciliation. This algo also known as React Fibre(cam out in react 16).
+=> As we know that the virtual DOM is just an object. So, whenever some changes occur in UI, the Reconciliation algo compares the difference between the old virtual DOM and new virtual DOM and updates the DOm with the changes. Comparing 2 objects is a pretty easy task for JS. So, this is the reason why react is so fast.
+
+Episode-06 Exploring the World
+-> Monolith architecture: Tradting way of building the project or app where all the code is at one place. For example, we have UI, Database, Authentication etc all placed at one place.
+-> Microservices architecture: In this, services such as UI, DB, Authentication etc are considered as individual projects (also known as separation of concerns) and combined together to form a big project. It follows single responsibility principle where each of its service has its own job and nobody is interfering in it.
+-> So how these services interact with each other?
+=> Mainly we will talk about how UI(in react) will interact with other services.
+=> This is about how can we fetch all the data directly from api instead of hard coding it.
+=> There are 2 approaches of how UI can fetch the data from backend:
+=> Approach 1: As soon as the page loads, api runs for a while and then the data is rendered on the UI.
+=> Approach 2: When the page loads, the UI is rendered and now the api will run taking few seconds, again our app will re-render with new data.
+=> In react, we will use approach 2 because in approach 1, till the api runs, our page will show nothing which makes the poor UX, but in second approach, atleast some data can be seen till the api runs.
+-> useEffect() Hook: It is a normal JS function which has some purpose in react, It takes 2 arguments - one is callback function and second is array of dependencies. It is called after the component is rendered.  It will be used in our second approach where once the UI is rendered, it will re-render and fetch the data inside the useEffect.

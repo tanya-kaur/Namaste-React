@@ -1,32 +1,16 @@
-/*
-<div id="parent">
-<div id="child1">
-<h1></h1>
-<h2></h2>
-</div>
-<div id="child2">
-<h1></h1>
-<h2></h2>
-</div>
-</div>
-*/
+import React from "react";
+import ReactDOM from "react-dom/client";
+import Header from "./src/components/Header";
+import Body from "./src/components/Body";
 
-const parent = React.createElement("div", { id: "parent" }, [
-  React.createElement("div", { id: "child1" }, [
-    React.createElement("h1", {}, "I'm h1 tag"),
-    React.createElement("div", {}, "I'm h2 tag"),
-  ]),
-  React.createElement("div", { id: "child2" }, [
-    React.createElement("h1", {}, "I'm h1 tag"),
-    React.createElement("div", {}, "I'm h2 tag"),
-  ]),
-]);
-
-// const heading = React.createElement(
-//   "h1",
-//   { id: "heading", xyz: "abc" },
-//   "Hellow world from React!!"
-// );
-// console.log(heading);
+// JSX => Babel transpiles to React.creatElement => JS object => HTML
+const AppLayout = () => {
+  return (
+    <div className="App">
+      <Header />
+      <Body />
+    </div>
+  );
+};
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(parent);
+root.render(<AppLayout />);

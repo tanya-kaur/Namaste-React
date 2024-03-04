@@ -1,0 +1,21 @@
+{
+  "name": "yes",
+  "version": "1.0.0",
+  "description": "A react js course",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html",
+    "test": "jest"
+  },
+  "author": "Tanya Kaur",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.11.0",
+    "process": "^0.11.10"
+  },
+  "dependencies": {
+    "allow-cors": "^2.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
