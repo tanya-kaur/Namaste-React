@@ -84,3 +84,32 @@ Episode-06 Exploring the World
 => Approach 2: When the page loads, the UI is rendered and now the api will run taking few seconds, again our app will re-render with new data.
 => In react, we will use approach 2 because in approach 1, till the api runs, our page will show nothing which makes the poor UX, but in second approach, atleast some data can be seen till the api runs.
 -> useEffect() Hook: It is a normal JS function which has some purpose in react, It takes 2 arguments - one is callback function and second is array of dependencies. It is called after the component is rendered.  It will be used in our second approach where once the UI is rendered, it will re-render and fetch the data inside the useEffect.
+const Header = () => {
+    let btnName = "Login"
+    return (
+        <button className= "btn" onClick={()=>{
+            btnName = "Logout"
+            console.log(btnName) //Logout
+        }} >{btnName}</button>
+    )
+}
+-> In the above code, we used JS to change the login button to logout. But when we click on this login button, it will not update the UI although it changes its value. This is because JS can change the value but cannot refresh the UI.
+=> So, if you want to make your component dynamic or something should change in your component, we use local state variables. Here is where useState state variables comes into picture.
+-> const [btnName, setBtnName] = useState("Login")
+-> return (
+        <button className= "btn" onClick={()=>{
+            setBtnName("Logout")
+        }} >{btnName}</button>
+    )
+-> Here,  setBtnName("Logout") will update the btnName and re-render the Header component so that all the updated values can be seen.
+=> It is said that we can't update constants in JS so how we are updating the value for btnName. Basically, whenever we are re-rendering the header component then btnName will act like a new variable. Diff Algorithm works here. 
+-> In conclusion, whenever the state variable updates, react triggers the Reconciliation cycle(re-renders the component).
+
+Episode-6.2 CORS plugin issue
+-> Use corsproxy.io to solve the issue of the CORS directly without using any extension.
+
+Episode-7 Finding the Path
+-> useEffect Hook in Detail: useEffect is called every time our component is rendered. But the set of dependencies change the behaviour of its render. Although only callback function is important, so if we don't give the dependency array, it will render everytime our component renders. If the dependency array
+is present but empty "[ ]", then useEffect is called only once during initial render of the component.
+-> If we have some dependency inside dependency array, then useEffect will only be called once the dependency changes. Plus it will also be called on the initial render(always)
+-> Important Note: Hooks can only be called inside the body of the component. Don't use hooks inside if else block as it creates inconsistency in your code. Don't create state variables inside a function or loops.
