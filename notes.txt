@@ -113,3 +113,12 @@ Episode-7 Finding the Path
 is present but empty "[ ]", then useEffect is called only once during initial render of the component.
 -> If we have some dependency inside dependency array, then useEffect will only be called once the dependency changes. Plus it will also be called on the initial render(always)
 -> Important Note: Hooks can only be called inside the body of the component. Don't use hooks inside if else block as it creates inconsistency in your code. Don't create state variables inside a function or loops.
+--------Routing-----------------
+-> Routing is something which help us to navigate on a particular page.
+-> Whenever we have the develop routes, we have to create a routing configuration.
+-> To use routing, we have to install react-router-dom JS library from npm.
+-> we have to import 'createBrowserRouter' in our app.js which will help in creating the routing configuration.
+-> Configuration means the information that what will happen on a specific route.
+-> RouterProvider from react-router-dom will provide the routing configuration in our app.
+-> React Router DOM provides a hook 'useRouteError' gives more detail about the error. It gives an oject which contains the information about the error. We can access that information and display on the UI.
+-> Children Routes: As we change our pages, we lost our header and footer. In order to show header and footer on all pages, we use children routes.
