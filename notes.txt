@@ -121,4 +121,92 @@ is present but empty "[ ]", then useEffect is called only once during initial re
 -> Configuration means the information that what will happen on a specific route.
 -> RouterProvider from react-router-dom will provide the routing configuration in our app.
 -> React Router DOM provides a hook 'useRouteError' gives more detail about the error. It gives an oject which contains the information about the error. We can access that information and display on the UI.
--> Children Routes: As we change our pages, we lost our header and footer. In order to show header and footer on all pages, we use children routes.
+-> Children Routes: As we change our pages, we lost our header and footer. In order to show header and footer on all pages, we use children routes. In this fuzz, we use a react component <Outlet /> which acts like a container that gets filled with the page we asked for. Also, we define an array of children which contains all the paths from the root.
+-> Definition of Outlet: React Outlet is a component provided by React Router that serves as a placeholder for child routes within a parent route. It allows for the nesting of routes, enabling developers to create complex navigation structures in their applications.
+-> While using react, if we want to route to other page, never ever use anchor tag as it refreshes the whole page when we click on any link.
+-> React Router DOM provides Link component which is used to navigate to other pages without reloading the whole page. It works just like anchor tag.
+-> With the help of this, the components are only getting interchanged without reloading the whole page. That is why react is used to make single page applications.
+-> There are 2 types of routing that we have in our web applications: 
+=> Client side Routing- In react, we have client side routing as all the components are already loaded in the app, we are not making asny server calls here hence our web page is not reloading.
+=> Server side Routing- This is the traditional way when we used to have .html files. When we click on anchor tag, it calls the server and reloads the page.
+-> React builds single page applications in which only components are getting interchanged once the app is loaded via client  side routing.
+-> Dynamic Routing: In this, we can dynamically display the content of the particular restaurant. The path for the routing will be:
+- path: "restaurants/:resId" 
+=> Here, resId will be dynamic and unique for every restaurant. Whenever we go to particular restaurant, a new page appears showing the details of that restaurant like name, image, discount, menu etc. This will appear with the help of api.
+-> We use <Link> component instead of anchor tag as it does not refreshes our page.
+
+Episode-8 Let's get Classy
+---------------Class-based Components---------------------
+-> How to define?
+=> class <Name of the component> extends React.component {
+    render(){
+        return (
+            <></>
+        )
+    }
+}
+=> extends React.component -> using to tell react that we are using class based component.
+=> render() method will return some piece of JSX in class component.
+=> We create constructor to receive the props. Inside constructor, we write super(props) because we are passing the data from our parent class  to the constructor which has be used in the child component. In order to access that data, we use super(props).
+=> As we know that in classes, whenever a class is initialized, a constructor is called. We are passing props in constructor which means props got automatically fetched from the parent class when the constructor is called. Afer that, we use the props using this keyword. Ex: this.pops.name.
+=> Never update state variables directly in class based components.
+-----------Lifecycle of class-based components----------------------
+-> How react component works behind the scenes?
+When the class-based component is loaded in a functional component, it goes to the class-based component. Now, new instance of the class is created. Whenever the class is instantiated/called, the constructor is called. Once the constructor is called, then render is called.
+=> If we have a child class-based component in a parent class-based component, then the parent class is instantiated and its constructor is called and after that its render function will be called. Post that, it will execute the JSX in which we have child component. Now, the child class gets instantiated, with which its constructor will be called and its render function will be called.
+=> There is another method except constructor and render method in class-based components which is called componentDidMount(). This method is called after constructor and render method are called.
+=> What if we have a componentDidMount() method in parent component also? 
+=> Then, first the child component will be executed as it is present in the render() method, then at last, componentDidMount of the parent will be executed.
+-> Use of componentDidMount(): It is used to make API calls after the component is loaded/mounted on a webpage. 
+=> Usually, in functional components we make an API call using useEffect Hook. As per the rules, in react, when the component is loaded, it renders and then make an API call and then again renders the data feched from the API. Similarly, in class-based components, we quickly want to render all the data and once the data is loaded, in the end componentDidMount is called to make an API call and re-render the component will the fetched data. So, that is why componentDidMount method is actually used. It works just like useEffect Hook in functional components.
+----------------React Lifecycle Methods Diagram-------------------------
+=> React has 2 phases - Render phase and Commit phase
+=> While mounting, first the constructor is called, then render is called. These 2 are comprised in render phase. Then, react actually updates the DOM. Once DOM is updated, then componentDidMount is called. last 2 things are comprised in commit phase. 
+=> If the parent component has more than one components to execute, then their render phase is batched together and commit is phase is batched together. Means constructor and render will happen together for the child components and post that commit phase happens together for all the child components.
+-> In case of API call, we have 3 cycles in react: mounting, updating and umounting
+Step 1: MOUNTING
+-> In this, component passes the render phase and commit phase. In commit phase, when the componentDidMount method is executed, the setState method is called in which new state is updated. For updating this new state, the component comes into Updating cycle from mounting cycle.
+Note: During the mounting, component uses default value.
+Step 2: UPDATING 
+-> In this, the new data which is fetched from API is updated using setState method and render method is again called to update the JSX. In this, the Reconciliation happens and using diff algo, difference between the actual and virtual DOM is made which in result updates the DOM. And finally, componentDidUpdate method is called. 
+Step 3: UNMOUNTING 
+-> After completing mounting and updating cycle, unmounting cycle starts which comprises of componentWillMount() method. This method executes only when we navigate to some other page from that particular page.
+
+Episode-9 Optimizing Our App
+-> We can optimize our app by converting it into small small modules. In each module, single responsibility principle is followed so that each module should have single responsibility to follow. If there is something extra, we will be needing another module. 
+-> So here comes the concept of custom hooks which optimizes our app and reduces the length of the code of one single component. Good practice is to create the custom hook in the utils folder as these custom hooks are kind of utility functions.
+-> If we want to create the custom hook for any purpose, we should first decide what will be the input and output of that hook. For example, in our case, resId is the input and resInfo is the output. Custom Hooks are normal utility javascript functions.
+-> We have online event listeners which helps to track the online status of the application.
+-> Window.addEventListener is an online event which detects whether our app is connected to internet or not.
+-> For production ready app, our code will be minified into one js file. But that size of the file usually becomes significantly large. Your js file size increases as how many components it holds.
+-> There are various terms used to optimize the performance of web applications:
+=> chunking
+=> code splitting
+=> dynamic bundling
+=> These are one and all same technique which is are used to break your application into smaller logical chunks.
+-> To avoid time consuming when js files takes a lot of time while loading on to browser for an application, we convert the components into bundlers of a particular feature. For example, in MakeMyTrip, we have different set of components for different features. Like we have hotels feature, flights feature etc. So, bundler of components can be created for hotels feature. Similarly, for other features as well. This is how we can divide our application into smaller smaller chunks.
+-> How actually we can implement this?
+=> First requirement is your app should be that large that you can apply this. For example, right now our food ordering app is not that large enough to apply bundling and stuff. Let us assume that our app is not only a food app but also have groceries.
+-> There is key term known as Lazy Loading(on demand loading). For eample, my grocery page will only gets loaded when I will go on grocery page. Before that its js won't get loaded in mail js file of a dist folder(main bundle of the whole application). It is also known as on demand loading as it only loads when required.
+=> const Grocery = lazy(()=> import ./components/grocery)
+=> lazy is a function which comes from react. It takes a call back function and in that callback function we will import grocery with path. We will not be mentioning import at the top and this will take place in app cpomponent.
+=> Lazy loading is used when we don't want to load everything at once and make the features of the app loaded when needed. 
+=> When we click on the grocery to load the component, it will do lazy loading, means it will explicitly load its js file which will take some time. In that time, we can see error on the UI which says that its JSZ is not loading on time. As we know that react is fast. It loads all the components very fast with miliseconds. But if our js file of that feature is not loaded on time then how we will expect to the see the changes in UI? To solve this we have a SUSPENSE component which is given by react.  It helps in loading components while having asynchronous process going on. Suspense gives us fallback component which renders when asynchronous actions are pending(loading of js files takes time while doing lazy loading).
+=> Features of lazy loading: This is very helpful for minimizing your application's loading speed and lowering the initial bundle size.
+=> Advantages of lazy():
+1. Enhanced speed: By selectively loading the components needed for the current view and not loading all of the components at once, lazy loading of components can enhance the speed of the application.
+2. Improved User Experience: You may improve the user experience by informing users that the application is actively loading material by utilizing Suspense to display a loading indication.
+3. Code Splitting: One of lazy()'s main advantages is that it makes code splitting possible. The process of code splitting involves breaking up the code of your application into smaller, on-demand bundles. This minimizes the initial bundle size and quickens your application's loading time.
+
+Episode-10 Jo Dikhta hai, vo bikta hai
+--------CSS Frameworks------------
+-> SASS and SCSS: Apart from normal css, it adds some extra features to the css. But not recommended for enterprise level applications.
+-> In Tailwind, if we want to create a dynamic class, for example if we want to set the width of some card to specific value which is not there in the list then we will specify as width as "w-[200px]".
+
+Episode-11 Data is the new Oil
+-> This episode is about how to manage data in your react application.
+-----------Higher Order Components--------------
+-> Higher Order component is a function that takes a component and returns a component. 
+-> It enhances the existin component and returns it back.
+-> React application has 2 layers - UI layer and Data layer. UI layer is powered by data layer.
+-> Data layer consists of states, props, local variables. UI layer consists of JSX. 
