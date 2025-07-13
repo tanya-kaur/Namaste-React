@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import { CLOUD_IMAGE_URL } from "../utils/constants";
+import UserContext from "../utils/UserContext";
 
 const RestaurantCard = (props) => {
   const {resData} = props;
@@ -8,6 +10,8 @@ const {cloudinaryImageId,
   cuisines,
   costForTwo,
   sla} = resData?.info;
+
+  const {loggedUser} = useContext(UserContext);
   return (
     <div
       className="m-4 p-4 w-[180px] rounded-lg bg-zinc-100 hover:bg-slate-300"
@@ -22,6 +26,7 @@ const {cloudinaryImageId,
       <h4 className="card-items">{avgRating} stars</h4>
       <h4 className="card-items">Rs{costForTwo}</h4>
       <h4 className="card-items">{sla.slaString}</h4>
+      <h4 className="card-items">{loggedUser}</h4>
     </div>
   );
 };

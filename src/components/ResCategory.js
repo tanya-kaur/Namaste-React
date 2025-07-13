@@ -1,12 +1,11 @@
 import { useState } from "react";
 import ItemList from "./ItemList";
 
-const ResCategory = ({items})=> {
-    const [showItems, setShowItems] = useState(false);
+const ResCategory = ({items, showItems, setShowIndex})=> {
+    // const [showItems, setShowItems] = useState(false)
     const handleClick = () => {
-        // console.log("clicked");
-        setShowItems(!showItems);
-    }
+        setShowIndex();
+      };
 return (
 <div>
     {/* header */}

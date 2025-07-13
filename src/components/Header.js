@@ -1,11 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import logo from "../../images/Treat.png";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import UserContext from "../utils/UserContext";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [login, setLogin] = useState("Login");
   const onlineStatus = useOnlineStatus();
+  const {loggedUser} = useContext(UserContext);
+  const cartItems = useSelector((store)=>store.cart.items);
+  console.log(cartItems);
+  // console.log(data);
   useEffect(()=> {
     console.log("useEffect called");
   }, [login]);
@@ -21,10 +27,11 @@ const Header = () => {
           <li className="px-4"><Link to="/about">About Us</Link></li>
           <li className="px-4"><Link to="/contact">Contact Us</Link></li>
           <li className="px-4"><Link to="/grocery">Grocery</Link></li>
-          <li className="px-4">Cart</li>
+          <li className="px-4 font-bold"><Link to="/cart">Cart ({cartItems.length} items)</Link></li>
           <button className="login px-2" onClick={()=>{
             login === "Login" ? setLogin("Logout") : setLogin("Login")
           }}>{login}</button>
+          <li className="font-bold">{loggedUser}</li>
         </ul>
       </div>
     </div>

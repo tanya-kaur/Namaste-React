@@ -8,6 +8,7 @@ import ResCategory from "./ResCategory";
 
 const RestaurantMenu = () => {
   const {resId} =   useParams();
+  const [showItemsIndex, setShowItemsIndex] = useState(null);
 
    const resInfo = useRestaurantMenu(resId);
     
@@ -24,7 +25,7 @@ const RestaurantMenu = () => {
 <div className="text-center">
     <h1 className="my-6 font-bold text-2xl">{name}</h1>
     <p className="font-bold text-lg py-2">{cuisines.join(", ")}  - {costForTwoMessage}</p>
-    {categories.map((category)=><ResCategory key={category?.card?.card.title} items={category?.card?.card}/>)}
+    {categories.map((category, index)=><ResCategory key={category?.card?.card.title} items={category?.card?.card} showItems={index === showItemsIndex ? true : false} setShowIndex={() => setShowItemsIndex(index)}/>)}
 </div>
     )
 }

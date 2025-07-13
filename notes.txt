@@ -19,7 +19,8 @@ Transitive dependencies: When we install a dependency, it has further dependenci
 -> we can add older versions of any browser using browserslist in package.json. For example, "browserslist": ["last 1 version", "> 1%"] will add the last version of the browser and the browser which has more than 1% of the market share.
 
 Episode-03 Laying the Foundation
--> We can use scripts in package.json to write the commands. For example, "start": "npx parcel index.html" and "build": "npx parcel build index.html". Now, to do a dev build, we can run `npm run start` and for production -> React.createElement is an object but when we render this element on to DOM, it becomes html element. 
+-> We can use scripts in package.json to write the commands. For example, "start": "npx parcel index.html" and "build": "npx parcel build index.html". Now, to do a dev build, we can run `npm run start`.
+-> React.createElement is an object but when we render this element on to DOM, it becomes html element. 
 -> In React.createElement("h1", {id: "heading"}, "Hello World"), "h1" is the tag, {id: "heading"} is an object having attributes and "Hello World" is the children(props).
 -> root.render(React.createElement("h1", {id: "heading"}, "Hello World")) will convert the object into html element and render it on the DOM.
 -> JSX is the javascript syntax which is make easier to create react elements. JSX is not HTML inside javascript.
@@ -148,7 +149,7 @@ Episode-8 Let's get Classy
 => extends React.component -> using to tell react that we are using class based component.
 => render() method will return some piece of JSX in class component.
 => We create constructor to receive the props. Inside constructor, we write super(props) because we are passing the data from our parent class  to the constructor which has be used in the child component. In order to access that data, we use super(props).
-=> As we know that in classes, whenever a class is initialized, a constructor is called. We are passing props in constructor which means props got automatically fetched from the parent class when the constructor is called. Afer that, we use the props using this keyword. Ex: this.pops.name.
+=> As we know that in classes, whenever a class is initialized, a constructor is called. We are passing props in constructor which means props got automatically fetched from the parent class when the constructor is called. After that, we use the props using this keyword. Ex: this.pops.name.
 => Never update state variables directly in class based components.
 -----------Lifecycle of class-based components----------------------
 -> How react component works behind the scenes?
@@ -187,7 +188,7 @@ Episode-9 Optimizing Our App
 -> To avoid time consuming when js files takes a lot of time while loading on to browser for an application, we convert the components into bundlers of a particular feature. For example, in MakeMyTrip, we have different set of components for different features. Like we have hotels feature, flights feature etc. So, bundler of components can be created for hotels feature. Similarly, for other features as well. This is how we can divide our application into smaller smaller chunks.
 -> How actually we can implement this?
 => First requirement is your app should be that large that you can apply this. For example, right now our food ordering app is not that large enough to apply bundling and stuff. Let us assume that our app is not only a food app but also have groceries.
--> There is key term known as Lazy Loading(on demand loading). For eample, my grocery page will only gets loaded when I will go on grocery page. Before that its js won't get loaded in mail js file of a dist folder(main bundle of the whole application). It is also known as on demand loading as it only loads when required.
+-> There is key term known as Lazy Loading(on demand loading). For eample, my grocery page will only gets loaded when I will go on grocery page. Before that its js won't get loaded in main js file of a dist folder(main bundle of the whole application). It is also known as on demand loading as it only loads when required.
 => const Grocery = lazy(()=> import ./components/grocery)
 => lazy is a function which comes from react. It takes a call back function and in that callback function we will import grocery with path. We will not be mentioning import at the top and this will take place in app cpomponent.
 => Lazy loading is used when we don't want to load everything at once and make the features of the app loaded when needed. 
@@ -208,5 +209,43 @@ Episode-11 Data is the new Oil
 -----------Higher Order Components--------------
 -> Higher Order component is a function that takes a component and returns a component. 
 -> It enhances the existin component and returns it back.
+---------------------------------------------------------
 -> React application has 2 layers - UI layer and Data layer. UI layer is powered by data layer.
 -> Data layer consists of states, props, local variables. UI layer consists of JSX. 
+-> -----------Lift the state up-------------
+=> For example, we want to show a particular section of items suppose we want to show only newly added items and collapse all the other items, in this case restaurant category component will not manage the state. Its parent that is restaurant menu will manage its state as it will show only single type of category at a time. So now, restaurant category will  become the controlled component as its state is controlled by its parent.
+-> In short, we have to lift the state up if we want to control our children.
+-> Props Drilling: Suppose we have some data in parent component which needs to be passed into its child of its child. In that case, first we have to pass the data from the parent to its child and further from current child to next child via props. So, this method is called props drilling. It is a major problem in react if the application is too large and if we have too many components. To overcome this issue, we have something in react called react context. Using this, we can keep all the data at one place and use that data wherever we want to instead of passing props here and there.
+-> For this, we will first create context. In utils, we will create a component/function using creatContext utility function which react provides. CreateContext is like a central global object. After that, we will go to that component where we want to use context data. So, for that use a "useContext" hook to pull the data from createContext utility. After pulling the data, we can use anywhere in our component. 
+-> So, whenever we want to access the props across a lot of children, we simply create a context and using useContext hook, we can use any props defined in createContext object.
+-> In class-based components, we don't have hooks. So, there is some other way to use context. First we will import that context file. Then, we will use that context as a component with consumer  - 
+<userContext.consumer> and inside this there will be a callback function which can access the data inside the createContext object..
+-> Now, for example after authentication, we want to show the loggedUser name wherever we want, in that case, we will use state variables so that when the user logs in, the state changes. And that state finally gets passed into the context provider. Contet provider is a wrapper component provided by react which enables us to use the context data dynamically. So, we will pass that logged in state of the user as a value in the context provider which is already been created in utils using createContext.
+Note: useContext uses global space to store its data. Even if a component is lazy loaded, it will access the update value of useContext from global space.
+
+Episode-12 Let's build our store
+-> Redux is not mandatory for every app.
+-> React and redux are different libraries.
+-> Redux is not the only library which is used for managing state. There are verious other libraries like Zustand.
+-> I redux, applications become easy to debug.
+-> There are 2 libraries that redux team offers - react-redux and redux toolkit.
+---------------------Redux Architecture-------------------
+-> We will be building the cart feature using redux. We will work around the feature of adding an item into the cart and increasing the count size of the cart. How actuallyy the items can be pushed into the cart.
+-> Redux store is an object which is kept in a ceontral global space.
+-> Redux store is a very huge JS object which holds all the data of the app. It has slices inside it so that similar data can be kept at in one slice. To keep data separate we create logical separations,which are called slices. We can create separate slices for different features.
+-> In our application, slices can be cart slice, user slice, themes slice - light and dark.
+-> For eample, if we click on add button to add an item in the cart, it dispatches an action. This action will call a function and further that function internally modifies the cart. On clicking the add button, it will not directly update the cart. 
+-> The function which is called by the action is known as reducer.
+When you hit the add button, it dispatches an action which calls the reducer function which further updates the slice of the redux store.
+-> Selector: The Selector will read the data from the redux store and update the cart component. For example, we have clicked on add button and it dispatched an action which calls the reducer function and it updates the slice of the redux store. This is half way. The next step is to update the cart value. If it is 1, it will become 2 when the selector will read the data and further updates the cart component. So, we will suscribe to the store, which means when the slice gets updated, our header component automatically gets updated using selector. In other words, header component is subscribed to the store through selector.
+---Redux steps-----
+1. Install @redux/toolkit and react-redux
+2. Build our store
+3. Connect our app to store
+4. Slice (CartSlice)
+5. Dispatch (action)
+6. Reducer function
+7. Selector
+-> Configuring the store is redux toolkit job but providing it to react app is react-redux job. React-redux gives "Provider" named export to provide the configuration to the react app.
+-> Selector is a hook in react.
+-> If we want to show anything anywhere in the app which is defined in redux, we have to subscribe to the store.
